@@ -1,5 +1,5 @@
 const API_KEY = "37b48b43"
-const BASE_URL = "http://www.omdbapi.com/"
+const BASE_URL = "https://www.omdbapi.com/"
 let searchResults = []
 
 const searchText = document.getElementById("search-text")
