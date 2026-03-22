@@ -7,8 +7,10 @@ const searchBtn = document.getElementById("search--btn")
 const movieItems = document.getElementById("movie__items")
 
 
-searchBtn.addEventListener("click", async () => {
-    if (!searchText.value) return
+searchBtn.addEventListener("click", handleSearchBtnClick)
+
+async function handleSearchBtnClick() {
+  if (!searchText.value) return
 
     try {
         // Step 1: Search for matching titles
@@ -35,7 +37,7 @@ searchBtn.addEventListener("click", async () => {
     } catch (error) {
         console.error("Something went wrong:", error)
     }
-})
+}
 
 function handleAddToWatchlist(imdbID) {
     const movie = searchResults.find(m => m.imdbID === imdbID)
