@@ -1,9 +1,9 @@
 const watchlistItemsEl = document.querySelector(".movie__items--wachlist")
 
 function renderWatchlist() {
-  const watchList = JSON.parse(localStorage.getItem("watchlist"))
+  const watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]")
 
-  const watchlistItems = watchList.map(item => {
+  const watchlistItems = watchlist.map(item => {
     return `
     
             <div class="movie">
