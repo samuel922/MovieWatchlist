@@ -144,6 +144,9 @@ body {
     align-items: center;
     gap: 0.4em;
     cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
 }
 
 .add-watchlist i {

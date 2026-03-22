@@ -6,6 +6,7 @@ const searchText = document.getElementById("search-text")
 const searchBtn = document.getElementById("search--btn")
 const movieItems = document.getElementById("movie__items")
 
+
 searchBtn.addEventListener("click", async () => {
     if (!searchText.value) return
 
@@ -23,15 +24,12 @@ searchBtn.addEventListener("click", async () => {
         // Step 2: Fetch full details for each result
         const detailPromises = data.Search.map((search) => {
             const searchUrl = `${BASE_URL}?apikey=${API_KEY}&t=${search.Title}`
-            return fetch(searchUrl)
-                .then(response => response.json())
-                .then(data => data)  // ✅ actually returns data
+            return fetch(searchUrl).then(res => res.json())
         })
 
-        // Step 3: Wait for ALL promises to resolve
-        searchResults = await Promise.all(detailPromises)
+        // Step 3: Wait for all, filter out failed responses
+        searchResults = (await Promise.all(detailPromises)).filter(m => m.Response === "True")
 
-        console.log(searchResults)  // ✅ now has actual data
         renderResults(searchResults)
 
     } catch (error) {
@@ -39,41 +37,51 @@ searchBtn.addEventListener("click", async () => {
     }
 })
 
+function handleAddToWatchlist(imdbID) {
+    const movie = searchResults.find(m => m.imdbID === imdbID)
+    if (!movie) return
+
+    const watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]")
+    const alreadyAdded = watchlist.some(m => m.imdbID === imdbID)
+
+    if (alreadyAdded) {
+        console.log("Already in watchlist")
+        return
+    }
+
+    watchlist.unshift(movie)
+    localStorage.setItem("watchlist", JSON.stringify(watchlist))
+    console.log(`${movie.Title} added to watchlist`)
+}
 
 function renderResults(searches) {
     const results = searches.map(search => {
-      console.log(search)
         return `
             <div class="movie">
                 <div class="movie__img">
-                  <img src="${search.Poster}" alt="" />
+                    <img src="${search.Poster}" alt="${search.Title}" />
                 </div>
-
                 <div class="movie__details">
-                  <div class="movie__title">
-                    <h2 class="movie__name">${search.Title}</h2>
-                    <span> <i class="fa-regular fa-star"></i> ${search.imdbRating} </span>
-                  </div>
-
-                  <div class="movie__stats">
-                    <span>${search.Runtime}</span>
-                    <span>${search.Genre}</span>
-                    <span class="add-watchlist">
-                      <i class="fa-solid fa-plus"></i>
-                      <span>Watchlist</span>
-                    </span>
-                  </div>
-
-                  <p class="movie__description">
-                    ${search.Plot}
-                  </p>
+                    <div class="movie__title">
+                        <h2 class="movie__name">${search.Title}</h2>
+                        <span><i class="fa-regular fa-star"></i> ${search.imdbRating}</span>
+                    </div>
+                    <div class="movie__stats">
+                        <span>${search.Runtime}</span>
+                        <span>${search.Genre}</span>
+                        <button class="add-watchlist" onclick="handleAddToWatchlist('${search.imdbID}')">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Watchlist</span>
+                        </button>
+                    </div>
+                    <p class="movie__description">${search.Plot}</p>
                 </div>
-              </div>
-        
+            </div>
         `
     }).join("")
 
-    console.log(results)
-
     movieItems.innerHTML = results
 }
+
+
+
