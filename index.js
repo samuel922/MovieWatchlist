@@ -60,7 +60,7 @@ function renderResults(searches) {
                     <span>${search.Genre}</span>
                     <span class="add-watchlist">
                       <i class="fa-solid fa-plus"></i>
-                      <span>Watchlis</span>
+                      <span>Watchlist</span>
                     </span>
                   </div>
 

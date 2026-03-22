@@ -101,7 +101,7 @@ body {
 /* MOVIES */
 
 .movie__items {
-    
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 4em;
@@ -159,6 +159,23 @@ body {
 
 .movie__img img {
     width: 100px;
+}
+
+.empty {
+    margin-top: 100px;
+    font-size: 2rem;
+    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4em;
+    color: #DFDDDD;
 }
 
 
